@@ -1,0 +1,63 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: "$rootDir/dependencies.gradle"
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        applicationId "test.task"
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+}
+
+dependencies {
+
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(':library_base')
+
+    implementation projectDependencies.kotlin
+    implementation projectDependencies.ktx
+    implementation projectDependencies.appCompat
+    implementation projectDependencies.constraintLayout
+    implementation projectDependencies.lifecycleExtentions
+    implementation projectDependencies.viewmodels
+    implementation projectDependencies.glide
+    implementation projectDependencies.glideProcessor
+    implementation projectDependencies.coroutines
+    implementation projectDependencies.dagger
+    implementation projectDependencies.daggerAndroid
+    kapt projectDependencies.daggerCompiler
+    implementation projectDependencies.retrofit
+    implementation projectDependencies.gsonConverter
+    implementation projectDependencies.logginInterceptor
+    implementation projectDependencies.dorfmanDelegates
+    implementation projectDependencies.navigationFragment
+    implementation projectDependencies.navigationUi
+
+    testImplementation testDependencies.junit
+    testImplementation testDependencies.mockitoInline
+    testImplementation testDependencies.mockitoAndroid
+    testImplementation testDependencies.mockitoKotlin
+    testImplementation testDependencies.coroutinesTest
+    testImplementation testDependencies.androidxTest
+
+}
