@@ -42,6 +42,13 @@ class DataSourceCacheImplTest {
         runBlocking {
             cut.saveUser(TestData.getDefaultUser())
             assertEquals(cut.getUserById(1), TestData.getDefaultUser())
+        }
+    }
+
+    @Test
+    fun `getUserById return null data for incorrect user ID`() {
+        runBlocking {
+            cut.saveUser(TestData.getDefaultUser())
             assertNull(cut.getUserById(2))
         }
     }
