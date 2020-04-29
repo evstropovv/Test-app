@@ -40,8 +40,6 @@ dependencies {
     implementation projectDependencies.constraintLayout
     implementation projectDependencies.lifecycleExtentions
     implementation projectDependencies.viewmodels
-    implementation projectDependencies.glide
-    implementation projectDependencies.glideProcessor
     implementation projectDependencies.coroutines
     implementation projectDependencies.dagger
     implementation projectDependencies.daggerAndroid
