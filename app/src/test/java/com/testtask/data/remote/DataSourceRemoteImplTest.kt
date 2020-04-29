@@ -1,21 +1,16 @@
-package com.uklontest.data.remote
+package com.testtask.data.remote
 
 import com.nhaarman.mockitokotlin2.given
-import com.uklontest.data.ApiRetrofit
-import com.uklontest.data.cache.DataSourceCacheImpl
-import com.uklontest.data.mapper.DataMapper
-import com.uklontest.data.models.CommentDto
-import com.uklontest.data.models.PostDto
-import com.uklontest.data.models.UserDto
-import com.uklontest.data.repository.RepositoryImpl
-import com.uklontest.domain.model.Comment
-import com.uklontest.domain.model.Post
-import com.uklontest.domain.model.UserInfo
-import junit.framework.TestCase
+import com.testtask.data.ApiRetrofit
+import com.testtask.data.mapper.DataMapper
+import com.testtask.data.models.CommentDto
+import com.testtask.data.models.PostDto
+import com.testtask.data.models.UserDto
+import com.testtask.domain.model.Comment
+import com.testtask.domain.model.Post
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Before
-
-import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock

@@ -1,6 +1,6 @@
-package com.uklontest.data.cache
+package com.testtask.data.cache
 
-import com.uklontest.data.TestData
+import com.testtask.data.TestData
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

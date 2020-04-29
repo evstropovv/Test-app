@@ -1,8 +1,8 @@
-package com.uklontest.data
+package com.testtask.data
 
-import com.uklontest.domain.model.Comment
-import com.uklontest.domain.model.Post
-import com.uklontest.domain.model.UserInfo
+import com.testtask.domain.model.Comment
+import com.testtask.domain.model.Post
+import com.testtask.domain.model.UserInfo
 
 object TestData {
     fun getNotEmptyPostList(): List<Post> {

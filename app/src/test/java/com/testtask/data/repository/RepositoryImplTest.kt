@@ -1,14 +1,14 @@
-package com.uklontest.data.repository
+package com.testtask.data.repository
 
 import com.nhaarman.mockitokotlin2.given
-import com.uklontest.data.TestData
-import com.uklontest.data.cache.DataSourceCacheImpl
-import com.uklontest.data.mapper.DataMapper
-import com.uklontest.data.models.UserDto
-import com.uklontest.data.remote.DataSourceRemoteImpl
-import com.uklontest.domain.model.Comment
-import com.uklontest.domain.model.Post
-import com.uklontest.domain.model.UserInfo
+import com.testtask.data.TestData
+import com.testtask.data.cache.DataSourceCacheImpl
+import com.testtask.data.mapper.DataMapper
+import com.testtask.data.models.UserDto
+import com.testtask.data.remote.DataSourceRemoteImpl
+import com.testtask.domain.model.Comment
+import com.testtask.domain.model.Post
+import com.testtask.domain.model.UserInfo
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
