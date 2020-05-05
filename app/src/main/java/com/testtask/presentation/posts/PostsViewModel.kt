@@ -25,7 +25,11 @@ class PostsViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch {
             getPostsListUseCase.execute(isFresh).also {
-                sendAction(Action.PostsLoadSuccess(it))
+                if (it != null) {
+                    sendAction(Action.PostsLoadSuccess(it))
+                } else {
+                    sendAction(Action.PostLoadFailure)
+                }
             }
         }
     }

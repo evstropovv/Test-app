@@ -2,8 +2,7 @@ package com.testtask.data.cache
 
 import com.testtask.data.TestData
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
@@ -24,7 +23,7 @@ class DataSourceCacheImplTest {
     fun `getPosts return not null data after saving`() {
         runBlocking {
             cut.savePosts(TestData.getNotEmptyPostList())
-            assert(cut.getPosts().isNotEmpty())
+            assertNotNull(cut.getPosts())
         }
     }
 
@@ -32,8 +31,8 @@ class DataSourceCacheImplTest {
     fun `getCommentsForPost return not null data for ID after saving`() {
         runBlocking {
             cut.saveComments(1, TestData.getNotEmptyCommentList())
-            assert(cut.getCommentsForPost(1).isNotEmpty())
-            assert(cut.getCommentsForPost(2).isEmpty())
+            assertNotNull(cut.getCommentsForPost(1))
+            assertNull(cut.getCommentsForPost(2))
         }
     }
 

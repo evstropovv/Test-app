@@ -4,12 +4,8 @@ import com.nhaarman.mockitokotlin2.given
 import com.testtask.data.TestData
 import com.testtask.data.cache.DataSourceCacheImpl
 import com.testtask.data.mapper.DataMapper
-import com.testtask.data.models.UserDto
 import com.testtask.data.remote.DataSourceRemoteImpl
-import com.testtask.domain.model.Comment
-import com.testtask.domain.model.Post
-import com.testtask.domain.model.UserInfo
-import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -38,18 +34,18 @@ class RepositoryImplTest {
     @Test
     fun `fresh getPosts return data from remote data source`() {
         runBlocking {
-            //given
-            val answer = TestData.getNotEmptyPostList();
+
+            val answer = TestData.getNotEmptyPostList()
 
             given(dataSourceRemote.getPosts())
                 .willReturn(answer)
             given(dataSourceCache.getPosts())
-                .willReturn(ArrayList())
+                .willReturn(null)
 
             // when
             val result = cut.getPosts(true)
 
-            assert(result.isNotEmpty())
+            assertNotNull(result)
             assertEquals(answer, result)
         }
     }
@@ -58,16 +54,16 @@ class RepositoryImplTest {
     fun `getPosts return non-empty list when cache is not empty`() {
         runBlocking {
             //given
-            val answer = TestData.getNotEmptyPostList();
+            val answer = TestData.getNotEmptyPostList()
 
             given(dataSourceRemote.getPosts())
-                .willReturn(ArrayList())
+                .willReturn(null)
             given(dataSourceCache.getPosts())
                 .willReturn(answer)
 
             // when
             val posts = cut.getPosts(false)
-            assert(posts.isNotEmpty())
+            assertNotNull(posts)
             assertEquals(answer, posts)
         }
     }
@@ -77,13 +73,13 @@ class RepositoryImplTest {
         runBlocking {
             //given
             given(dataSourceRemote.getPosts())
-                .willReturn(ArrayList())
+                .willReturn(null)
             given(dataSourceCache.getPosts())
-                .willReturn(ArrayList())
+                .willReturn(null)
 
             // when
             val posts = cut.getPosts(false)
-            assert(posts.isEmpty())
+            assertNull(posts)
         }
     }
 
@@ -91,17 +87,17 @@ class RepositoryImplTest {
     fun `fresh getCommentsForPost return data from remote data source`() {
         runBlocking {
             //given
-            val answer = TestData.getNotEmptyCommentList();
+            val answer = TestData.getNotEmptyCommentList()
 
             given(dataSourceRemote.getCommentsForPost(1))
                 .willReturn(answer)
             given(dataSourceCache.getCommentsForPost(1))
-                .willReturn(ArrayList())
+                .willReturn(null)
 
             // when
             val comments = cut.getCommentsForPost(1,true)
 
-            assert(comments.isNotEmpty())
+            assertNotNull(comments)
             assertEquals(answer, comments)
         }
     }
@@ -110,32 +106,32 @@ class RepositoryImplTest {
     fun `getCommentsForPost return non-empty list when cache is not empty`() {
         runBlocking {
             //given
-            val answer = TestData.getNotEmptyCommentList();
+            val answer = TestData.getNotEmptyCommentList()
 
             given(dataSourceRemote.getCommentsForPost(1))
-                .willReturn(ArrayList())
+                .willReturn(null)
             given(dataSourceCache.getCommentsForPost(1))
                 .willReturn(answer)
 
             // when
             val comments = cut.getCommentsForPost(1,false)
-            assert(comments.isNotEmpty())
+            assertNotNull(comments)
             assertEquals(answer, comments)
         }
     }
 
     @Test
-    fun `getCommentsForPost return empty list when cache and remote are empty`() {
+    fun `getCommentsForPost return null when cache and remote are empty`() {
         runBlocking {
             //given
             given(dataSourceRemote.getCommentsForPost(1))
-                .willReturn(ArrayList())
+                .willReturn(null)
             given(dataSourceCache.getCommentsForPost(1))
-                .willReturn(ArrayList())
+                .willReturn(null)
 
             // when
             val comments = cut.getCommentsForPost(1,false)
-            assert(comments.isEmpty())
+            assertNull(comments)
         }
     }
 
@@ -143,16 +139,15 @@ class RepositoryImplTest {
     @Test
     fun `fresh getUserById return data from remote data source`() {
         runBlocking {
-            //given
-            val answer = TestData.getDefaultUser();
+
+            val answer = TestData.getDefaultUser()
 
             given(dataSourceRemote.getUserById(1))
                 .willReturn(answer)
             given(dataSourceCache.getUserById(1))
-                .willReturn(mapper.toDomain(UserDto()))
+                .willReturn(mapper.toDomain(TestData.getDefaultUserDto()))
 
-            // when
-            val user = cut.getUserById(1,true)
+            val user = cut.getUserById(1, true)
 
             assertEquals(answer, user)
         }
@@ -161,21 +156,13 @@ class RepositoryImplTest {
     @Test
     fun `getUserById return non-empty user when user cache is not empty`() {
         runBlocking {
-            //given
-            val answer = TestData.getDefaultUser();
-
             given(dataSourceRemote.getUserById(1))
-                .willReturn(mapper.toDomain(UserDto()))
+                .willReturn(mapper.toDomain(TestData.getDefaultUserDto()))
             given(dataSourceCache.getUserById(1))
-                .willReturn(answer)
+                .willReturn(mapper.toDomain(TestData.getDefaultUserDto()))
 
-            // when
             val user = cut.getUserById(1,false)
-            assertEquals(answer, user)
+            assertNotNull(user)
         }
     }
-
-
-
-
 }

@@ -25,6 +25,8 @@ class UserInfoFragment : BaseContainerFragment() {
 
     override val layoutResourceId: Int = R.layout.fragment
 
+    lateinit var adapter: DelegateAdapter
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (activity?.application as App).getComponent()?.inject(this)
@@ -34,15 +36,21 @@ class UserInfoFragment : BaseContainerFragment() {
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        adapter = DelegateAdapter(this, {})
+        rv.layoutManager = LinearLayoutManager(requireContext())
+        rv.adapter = adapter
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.stateLiveData.observe(viewLifecycleOwner,
             Observer<UserInfoViewModel.ViewState> {
                 progressBar.visible(it.isLoading)
-                val adapter = DelegateAdapter(this, {})
+                ivError.visible(it.isError)
                 adapter.items = it.displayableItems
-                rv.layoutManager = LinearLayoutManager(activity)
-                rv.adapter = adapter
+                adapter.notifyDataSetChanged()
             })
 
         swiperefresh.setOnRefreshListener {

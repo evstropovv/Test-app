@@ -7,7 +7,5 @@ import javax.inject.Inject
 class GetPostsUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    suspend fun execute(isFresh : Boolean): List<Post> {
-        return repository.getPosts(isFresh)
-    }
+    suspend fun execute(isFresh: Boolean): List<Post>? = repository.getPosts(isFresh)
 }

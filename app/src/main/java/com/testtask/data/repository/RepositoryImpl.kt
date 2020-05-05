@@ -13,41 +13,42 @@ class RepositoryImpl @Inject constructor(
     private val dataSourceCache: DataSourceCache
 ) : Repository {
 
-    override suspend fun getPosts(isFresh: Boolean): List<Post> {
-        var posts = when (isFresh) {
-            true -> dataSourceRemote.getPosts()
-            false -> dataSourceCache.getPosts()
+    override suspend fun getPosts(isFresh: Boolean): List<Post>? {
+        val posts = dataSourceRemote.getPosts()
+        posts?.let {
+            dataSourceCache.savePosts(it)
+            return it
         }
-        if (posts.isEmpty()) {
-            posts = dataSourceRemote.getPosts()
-            dataSourceCache.savePosts(posts)
-        }
-        return posts
+
+        if (isFresh)
+            return null
+
+        return dataSourceCache.getPosts()
     }
 
-    override suspend fun getCommentsForPost(postId: Long, isFresh: Boolean): List<Comment> {
-        var comments = when (isFresh) {
-            true -> dataSourceRemote.getCommentsForPost(postId)
-            false -> dataSourceCache.getCommentsForPost(postId)
+    override suspend fun getCommentsForPost(postId: Long, isFresh: Boolean): List<Comment>? {
+        val comments = dataSourceRemote.getCommentsForPost(postId)
+        comments?.let {
+            dataSourceCache.saveComments(postId, it)
+            return it
         }
-        if (comments.isEmpty()) {
-            comments = dataSourceRemote.getCommentsForPost(postId)
-            dataSourceCache.saveComments(postId, comments)
-        }
-        return comments
+
+        if (isFresh)
+            return null
+
+        return dataSourceCache.getCommentsForPost(postId)
     }
 
     override suspend fun getUserById(id: Long, isFresh: Boolean): UserInfo? {
-        var user = when (isFresh) {
-            true -> dataSourceRemote.getUserById(id)
-            false -> dataSourceCache.getUserById(id)
+        val user = dataSourceRemote.getUserById(id)
+        user?.let {
+            dataSourceCache.saveUser(it)
+            return it
         }
-        if (user == null) {
-            user = dataSourceRemote.getUserById(id)
-            user?.let{
-                dataSourceCache.saveUser(it)
-            }
-        }
-        return user
+
+        if (isFresh)
+            return null
+
+        return dataSourceCache.getUserById(id)
     }
 }

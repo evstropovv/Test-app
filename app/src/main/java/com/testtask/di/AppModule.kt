@@ -17,7 +17,7 @@ public class AppModule(val application: Application) {
     @Provides
     @Singleton
     public fun provideContext(): Context {
-        return application;
+        return application
     }
 
     @Provides

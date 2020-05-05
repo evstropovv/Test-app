@@ -23,6 +23,8 @@ class PostsFragment : BaseContainerFragment() {
 
     private lateinit var viewModel: PostsViewModel
 
+    lateinit var adapter: DelegateAdapter
+
     override val layoutResourceId: Int = R.layout.fragment
 
     override fun onAttach(context: Context) {
@@ -31,21 +33,26 @@ class PostsFragment : BaseContainerFragment() {
         viewModel = ViewModelProvider(this, factory).get(PostsViewModel::class.java)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        adapter = DelegateAdapter(this) {
+            val bundle = Bundle()
+            bundle.putParcelable("post", it)
+            NavHostFragment.findNavController(this)
+                .navigate(R.id.action_postsFragment_to_userInfoFragment, bundle)
+        }
+        rv.layoutManager = LinearLayoutManager(requireContext())
+        rv.adapter = adapter
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.stateLiveData.observe(viewLifecycleOwner,
             Observer<PostsViewModel.ViewState> {
                 progressBar.visible(it.isLoading)
-                val adapter = DelegateAdapter(this) {
-                    val bundle = Bundle()
-                    bundle.putParcelable("post", it)
-                    NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_postsFragment_to_userInfoFragment, bundle)
-                }
+                ivError.visible(it.isError)
                 adapter.items = it.displayableItems
-                rv.layoutManager = LinearLayoutManager(activity)
-                rv.adapter = adapter
+                adapter.notifyDataSetChanged()
             })
 
         swiperefresh.setOnRefreshListener {

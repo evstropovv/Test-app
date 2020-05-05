@@ -35,12 +35,20 @@ class UserInfoViewModel @Inject constructor(
     fun loadClienInfo(userId: Long, postId: Long, isFresh: Boolean = false) {
         job?.cancel()
         job = viewModelScope.launch {
-            val userInfoAndPostsList: MutableList<DisplayableItem> = ArrayList()
-            val userInfo = async { userInfoUseCase.execute(userId, isFresh) }
-            val posts = async { commentsUseCase.execute(postId, isFresh) }
-            userInfo.await()?.let { userInfoAndPostsList.add(it) }
-            userInfoAndPostsList.addAll(posts.await())
-            sendAction(Action.UserInfoSuccess(userInfoAndPostsList))
+            val userInfoDef = async { userInfoUseCase.execute(userId, isFresh) }
+            val postsDef = async { commentsUseCase.execute(postId, isFresh) }
+
+            val userInfo = userInfoDef.await()
+            val posts = postsDef.await()
+
+            if (userInfo != null && posts != null) {
+                val userInfoAndPostsList: MutableList<DisplayableItem> = ArrayList()
+                userInfoAndPostsList.add(userInfo)
+                userInfoAndPostsList.addAll(posts)
+                sendAction(Action.UserInfoSuccess(userInfoAndPostsList))
+            } else {
+                sendAction(Action.UserInfoLoadFailure)
+            }
         }
     }
 

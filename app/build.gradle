@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply from: "$rootDir/dependencies.gradle"
 
 android {
     compileSdkVersion 29
@@ -34,28 +33,44 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(':library_base')
 
-    implementation projectDependencies.kotlin
-    implementation projectDependencies.ktx
-    implementation projectDependencies.appCompat
-    implementation projectDependencies.constraintLayout
-    implementation projectDependencies.lifecycleExtentions
-    implementation projectDependencies.viewmodels
-    implementation projectDependencies.coroutines
-    implementation projectDependencies.dagger
-    implementation projectDependencies.daggerAndroid
-    kapt projectDependencies.daggerCompiler
-    implementation projectDependencies.retrofit
-    implementation projectDependencies.gsonConverter
-    implementation projectDependencies.logginInterceptor
-    implementation projectDependencies.dorfmanDelegates
-    implementation projectDependencies.navigationFragment
-    implementation projectDependencies.navigationUi
+    def kotlin = '1.3.61'
+    def ktx = '1.2.0'
+    def appcompat = '1.1.0'
+    def lifecycle = '2.2.0'
+    def coroutinesVersion = '1.3.2'
+    def daggerVersion = '2.25.4'
+    def retrofitVersion = '2.7.1'
+    def okHttpLoggingVersion = '3.10.0'
+    def delegatesVersion = '4.2.0'
+    def navVersion = '2.3.0-alpha05'
 
-    testImplementation testDependencies.junit
-    testImplementation testDependencies.mockitoInline
-    testImplementation testDependencies.mockitoAndroid
-    testImplementation testDependencies.mockitoKotlin
-    testImplementation testDependencies.coroutinesTest
-    testImplementation testDependencies.androidxTest
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
+    implementation "androidx.core:core-ktx:$ktx"
+    implementation "androidx.appcompat:appcompat:${appcompat}"
+    implementation "androidx.constraintlayout:constraintlayout:${appcompat}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutinesVersion}"
+    implementation "com.google.dagger:dagger:${daggerVersion}"
+    implementation "com.google.dagger:dagger-android-support:${daggerVersion}"
+    kapt "com.google.dagger:dagger-compiler:${daggerVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${okHttpLoggingVersion}"
+    implementation "com.hannesdorfmann:adapterdelegates4:${delegatesVersion}"
+    implementation "androidx.navigation:navigation-fragment:${navVersion}"
+    implementation "androidx.navigation:navigation-ui:${navVersion}"
 
+    def junitVersion = "4.13"
+    def kotlinTestVersion = "1.3.2"
+    def mockitoVersion = "3.2.4"
+    def mockitoKotlinVersion = "2.2.0"
+    def androidxTestVersion = "2.1.0"
+
+    testImplementation "junit:junit:${junitVersion}"
+    testImplementation "org.mockito:mockito-inline:${mockitoVersion}"
+    testImplementation "org.mockito:mockito-android:${mockitoVersion}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlinVersion}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${kotlinTestVersion}"
+    testImplementation "android.arch.core:core-testing:${androidxTestVersion}"
 }

@@ -7,7 +7,6 @@ import javax.inject.Inject
 class GetCommentsUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    suspend fun execute(postId: Long, isFresh : Boolean): List<Comment> {
-        return repository.getCommentsForPost(postId, isFresh)
-    }
+    suspend fun execute(postId: Long, isFresh: Boolean): List<Comment>? =
+        repository.getCommentsForPost(postId, isFresh)
 }

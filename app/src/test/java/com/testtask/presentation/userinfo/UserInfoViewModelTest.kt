@@ -7,9 +7,6 @@ import com.nhaarman.mockitokotlin2.verify
 import com.testtask.CoroutineRule
 import com.testtask.data.TestData
 import com.testtask.data.mapper.DataMapper
-import com.testtask.data.models.UserDto
-import com.testtask.domain.model.Comment
-import com.testtask.domain.model.Post
 import com.testtask.domain.model.delegate.DisplayableItem
 import com.testtask.domain.usecase.GetCommentsUseCase
 import com.testtask.domain.usecase.GetUserInfoUseCase
@@ -17,7 +14,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
-
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -56,7 +52,7 @@ class UserInfoViewModelTest {
     @Test
     fun `execute userInfoUseCase and commentsUseCase after setPost`() {
 
-        cut.setPost(Post(userId = 1, id = 2, title = "", body = ""))
+        cut.setPost(TestData.getPost())
 
         runBlocking {
             verify(userInfoUseCase).execute(1, false)
@@ -79,7 +75,7 @@ class UserInfoViewModelTest {
         }
 
         //when
-        cut.setPost(Post(userId = 1, id = 2, title = "", body = ""))
+        cut.setPost(TestData.getPost())
 
         val displayableItem : MutableList<DisplayableItem> = ArrayList()
         displayableItem.add(TestData.getDefaultUser())
@@ -104,16 +100,16 @@ class UserInfoViewModelTest {
 
         commentsUseCase.stub {
             onBlocking { execute(2, false) } doReturn
-                    ArrayList<Comment>()
+                  null
         }
 
         //when
-        cut.setPost(Post(userId = 1, id = 2, title = "", body = ""))
+        cut.setPost(TestData.getPost())
 
         // then
         assertEquals(cut.stateLiveData.value, UserInfoViewModel.ViewState(
             isLoading = false,
-            isError = false,
+            isError = true,
             displayableItems = ArrayList<DisplayableItem>()))
 
     }
